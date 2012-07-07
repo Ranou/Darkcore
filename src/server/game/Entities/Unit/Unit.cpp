@@ -10814,6 +10814,16 @@ uint32 Unit::SpellDamageBonus(Unit* victim, SpellInfo const* spellProto, uint32 
                     if (victim->GetAuraEffect(SPELL_AURA_PERIODIC_DAMAGE, SPELLFAMILY_PRIEST, 0x100000, 0, 0, GetGUID()))
                         AddPctN(DoneTotalMod, aurEff->GetAmount());
             }
+            // Triple damage for Shadow Word: Death
+            else if(spellProto->Id == 32379)
+                if (victim->GetHealthPct() < 25)
+                {
+                    int32 mod = 300;
+                    // Mind Melt
+                    if (AuraEffect* aurEff = GetDummyAuraEffect(SPELLFAMILY_PRIEST, 3139, 0))
+                        mod += aurEff->GetAmount();
+                    AddPctN(DoneTotalMod, mod);
+                }
         break;
         case SPELLFAMILY_PALADIN:
             // Judgement of Vengeance/Judgement of Corruption
